@@ -1,0 +1,70 @@
+---
+import { STANDARDS } from '../../data/standards';
+import { AUDIT_SERVICES } from '../../data/auditServices';
+import { NAV_LINKS } from '../../config/site';
+---
+<header class="site-nav">
+  <a class="nav-logo" href="/">
+    <img src="/images/logo.svg" alt="ISO Audit Align" width="190" height="140" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li class="nav-dropdown">
+      <button aria-haspopup="true">Services</button>
+      <div class="nav-dropdown-panel nav-dropdown-panel-wide">
+        <div class="dd-group">
+          <div class="dd-group-title">ISO Standards</div>
+          {STANDARDS.map((s) => (
+            <a class="nav-dropdown-item" href={`/services/${s.slug}/`}>
+              <span class="dd-tag">{s.tag}</span>
+              <span class="dd-name">{s.name}</span>
+            </a>
+          ))}
+        </div>
+        <div class="dd-group">
+          <div class="dd-group-title">Audit Services</div>
+          {AUDIT_SERVICES.map((s) => (
+            <a class="nav-dropdown-item" href={`/services/${s.slug}/`}>
+              <span class="dd-name">{s.name}</span>
+            </a>
+          ))}
+        </div>
+        <a class="nav-dropdown-item nav-dropdown-item-wide" href="/training/">
+          <span class="dd-tag">Also from us</span>
+          <span class="dd-name">Training &amp; Education →</span>
+        </a>
+      </div>
+    </li>
+    {NAV_LINKS.map((link) => (
+      <li><a href={link.href}>{link.label}</a></li>
+    ))}
+    <li><a class="nav-cta" href="/contact/">Book Free Consultation</a></li>
+  </ul>
+  <button class="nav-ham" id="nav-ham" aria-label="Menu" aria-expanded="false" aria-controls="mob-menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+<nav class="mob-menu" id="mob-menu">
+  <a href="/">Home</a>
+  <a href="/#services">Services</a>
+  {STANDARDS.map((s) => (
+    <a href={`/services/${s.slug}/`} style="padding-left:24px;font-size:.87rem">{s.name}</a>
+  ))}
+  {AUDIT_SERVICES.map((s) => (
+    <a href={`/services/${s.slug}/`} style="padding-left:24px;font-size:.87rem">{s.name}</a>
+  ))}
+  <a href="/training/" style="padding-left:24px;font-size:.87rem">Training &amp; Education</a>
+  {NAV_LINKS.map((link) => (
+    <a href={link.href}>{link.label}</a>
+  ))}
+  <a class="m-cta" href="/contact/">Book Free Consultation</a>
+</nav>
+
+<script>
+  const ham = document.getElementById('nav-ham');
+  const menu = document.getElementById('mob-menu');
+  ham?.addEventListener('click', () => {
+    const open = menu?.classList.toggle('open');
+    ham.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+</script>

@@ -1,0 +1,13 @@
+---
+interface Props {
+  heading?: string;
+  copy?: string;
+}
+const { heading = 'Ready to get certified?', copy = '45-minute no-obligation consultation. Honest assessment. Fixed-price proposal.' } = Astro.props;
+---
+<div class="cta-banner reveal">
+  <div class="cta-inner">
+    <div><h2>{heading}</h2><p>{copy}</p></div>
+    <a class="btn-white" href="/contact/">Book Free Consultation</a>
+  </div>
+</div>

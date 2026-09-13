@@ -1,0 +1,69 @@
+---
+import { STANDARDS } from '../data/standards';
+import { AUDIT_SERVICES } from '../data/auditServices';
+import { ASSESSMENTS } from '../data/assessments';
+import { SITE } from '../config/site';
+---
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="/images/logo.svg" alt="ISO Audit Align" class="footer-logo" width="190" height="140" />
+        <p>ISO certification consulting and training for organisations across Australia and worldwide. Practical management systems that create real business value.</p>
+        <div class="footer-contact-highlight">
+          <a href={SITE.phoneHref}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+            {SITE.phone}
+          </a>
+          <a href={`mailto:${SITE.email}`}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            {SITE.email}
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>ISO Standards</h4>
+        <ul>
+          {STANDARDS.map((s) => <li><a href={`/services/${s.slug}/`}>{s.tag.split(':')[0]}</a></li>)}
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Audit Services</h4>
+        <ul>
+          {AUDIT_SERVICES.map((s) => <li><a href={`/services/${s.slug}/`}>{s.name}</a></li>)}
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Assessments</h4>
+        <ul>
+          <li><a href="/assessments/">All Assessments</a></li>
+          {ASSESSMENTS.map((a) => <li><a href={`/assessments/${a.slug}/`}>{a.standardTag.split(':')[0]}</a></li>)}
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/training/">Training</a></li>
+          <li><a href="/partners/">Partners</a></li>
+          <li><a href="/contact/">Contact Us</a></li>
+          <li><a href={SITE.linkedin} target="_blank" rel="noopener">LinkedIn</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/privacy-policy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© {new Date().getFullYear()} ISO Audit Align. Worldwide delivery.</p>
+      <div class="f-links">
+        <a href={SITE.phoneHref}>{SITE.phone}</a>
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      </div>
+    </div>
+  </div>
+</footer>

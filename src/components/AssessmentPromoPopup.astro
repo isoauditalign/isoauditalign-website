@@ -1,0 +1,38 @@
+---
+import { ASSESSMENTS } from '../data/assessments';
+---
+<div id="assessment-promo" class="promo-poster" hidden>
+  <button class="promo-poster-close" id="promo-poster-close" aria-label="Close">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
+  <div class="promo-poster-badge">{ASSESSMENTS.length} Free Assessments</div>
+  <h3>How audit-ready are you, really?</h3>
+  <p>Take a free self-assessment and get an instant score with tailored priorities — no sign-up needed.</p>
+  <div class="promo-poster-icons">🔐 📋 🌱 🦺 🤖 🛡️</div>
+  <a class="btn" href="/assessments/" style="width:100%;text-align:center">Take a Free Assessment →</a>
+</div>
+
+<script>
+  (function () {
+    if (location.pathname.startsWith('/assessments')) return;
+    if (sessionStorage.getItem('promo-poster-dismissed')) return;
+
+    const el = document.getElementById('assessment-promo');
+    const closeBtn = document.getElementById('promo-poster-close');
+    if (!el || !closeBtn) return;
+
+    function dismiss() {
+      el.classList.remove('open');
+      sessionStorage.setItem('promo-poster-dismissed', '1');
+      setTimeout(() => { el.hidden = true; }, 400);
+    }
+
+    closeBtn.addEventListener('click', dismiss);
+
+    setTimeout(() => {
+      if (sessionStorage.getItem('promo-poster-dismissed')) return;
+      el.hidden = false;
+      requestAnimationFrame(() => el.classList.add('open'));
+    }, 9000);
+  })();
+</script>

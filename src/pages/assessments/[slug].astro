@@ -1,0 +1,34 @@
+---
+import AssessmentLayout from '../../layouts/AssessmentLayout.astro';
+import { ASSESSMENTS } from '../../data/assessments';
+
+export function getStaticPaths() {
+  return ASSESSMENTS.map((a) => ({ params: { slug: a.slug }, props: { assessment: a } }));
+}
+
+const { assessment } = Astro.props;
+const questionCount = assessment.scoringMode === 'percentage'
+  ? assessment.domains.reduce((s, d) => s + d.questions.length, 0)
+  : assessment.sections.reduce((s, sec) => s + sec.questions.length, 0);
+---
+<AssessmentLayout
+  title={assessment.title}
+  description={`Free ${assessment.standardTag} self-assessment — ${questionCount} questions, instant score, tailored improvement priorities. No sign-up required.`}
+  barTitle={assessment.title}
+  barSub={`Free · No sign-up · Printable report · ${questionCount} questions`}
+>
+  <div id="assessment-root"></div>
+</AssessmentLayout>
+
+<script define:vars={{ slug: assessment.slug }}>
+  window.__assessmentSlug = slug;
+</script>
+<script>
+  import { mountAssessment } from '../../lib/assessmentEngine';
+  import { getAssessment } from '../../data/assessments';
+
+  const slug = (window as unknown as { __assessmentSlug: string }).__assessmentSlug;
+  const assessment = getAssessment(slug);
+  const root = document.getElementById('assessment-root');
+  if (assessment && root) mountAssessment(root, assessment);
+</script>

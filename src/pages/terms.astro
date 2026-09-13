@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config/site';
+---
+<BaseLayout title="Terms of Use" description="Terms governing use of the ISO Audit Align website, its free assessment tools, and the information published on it.">
+  <div class="page-hero" style="padding:72px 0 48px">
+    <div class="container">
+      <h1 style="font-size:clamp(26px,3.4vw,38px)">Terms of Use</h1>
+      <p>Last updated: {new Date().toLocaleDateString('en-AU', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+    </div>
+  </div>
+  <section class="section section-tight">
+    <div class="container" style="max-width:760px">
+      <div style="font-size:.92rem;color:var(--muted);line-height:1.85;display:flex;flex-direction:column;gap:22px">
+        <div>
+          <h2 style="font-size:1.05rem;color:var(--text);margin-bottom:8px">Use of this site</h2>
+          <p>This website and its content are provided by ISO Audit Align for general information purposes. By using this site, including our free self-assessment tools, you agree to these terms.</p>
+        </div>
+        <div>
+          <h2 style="font-size:1.05rem;color:var(--text);margin-bottom:8px">No professional advice</h2>
+          <p>Content on this site, including free assessment results, is general in nature and does not constitute formal audit, certification, or legal advice. Results from our self-assessment tools are indicative only and should not be relied upon as a substitute for a formal gap analysis or certification audit.</p>
+        </div>
+        <div>
+          <h2 style="font-size:1.05rem;color:var(--text);margin-bottom:8px">Intellectual property</h2>
+          <p>All content on this site, including assessment questions, text, and branding, is the property of ISO Audit Align unless otherwise noted, and may not be reproduced without permission.</p>
+        </div>
+        <div>
+          <h2 style="font-size:1.05rem;color:var(--text);margin-bottom:8px">Third-party services</h2>
+          <p>This site uses third-party services, including Formspree for form submissions and, where enabled, Cal.com for calendar bookings. Your use of those features is also subject to those providers' own terms.</p>
+        </div>
+        <div>
+          <h2 style="font-size:1.05rem;color:var(--text);margin-bottom:8px">Contact</h2>
+          <p>Questions about these terms can be sent to <a href={`mailto:${SITE.email}`} style="color:var(--red)">{SITE.email}</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

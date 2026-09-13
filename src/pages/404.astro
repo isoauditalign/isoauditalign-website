@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Page Not Found" description="The page you're looking for doesn't exist." hideCta={true}>
+  <section class="section text-center">
+    <div class="container">
+      <div class="mono" style="color:var(--red);margin-bottom:16px">404</div>
+      <h1 class="sec-h">Page not found.</h1>
+      <p class="sec-intro" style="margin:0 auto 28px">The page you're looking for may have moved. Try the homepage, or one of these:</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a class="btn" href="/">Home</a>
+        <a class="btn-outline" href="/assessments/">Assessments</a>
+        <a class="btn-outline" href="/contact/">Contact</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

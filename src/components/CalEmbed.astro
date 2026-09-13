@@ -1,0 +1,32 @@
+---
+import { CAL_CONFIG, isCalConfigured } from '../config/cal';
+import { SITE } from '../config/site';
+
+const configured = isCalConfigured();
+---
+{configured ? (
+  <div id="cal-inline" style="min-height:600px;border:1.5px solid var(--border);border-radius:var(--r-md);overflow:hidden"></div>
+) : (
+  <div class="card" style="text-align:center;padding:44px 28px">
+    <div style="font-size:1.6rem;margin-bottom:10px">📅</div>
+    <h3 style="margin-bottom:8px">Online booking coming soon</h3>
+    <p style="margin-bottom:18px">We're setting up instant calendar booking. In the meantime, call, WhatsApp, or send us your details and we'll lock in a time within one business day.</p>
+    <a class="btn" href={SITE.phoneHref}>Call {SITE.phone}</a>
+  </div>
+)}
+
+{configured && (
+  <script define:vars={{ username: CAL_CONFIG.username, eventType: CAL_CONFIG.eventType }}>
+    (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+    // @ts-ignore
+    Cal("init", { origin: "https://cal.com" });
+    // eventType is optional — fall back to just the username (general booking page) when unset.
+    const calLink = eventType ? `${username}/${eventType}` : username;
+    // @ts-ignore
+    Cal("inline", {
+      elementOrSelector: "#cal-inline",
+      calLink,
+      config: { theme: "light" },
+    });
+  </script>
+)}

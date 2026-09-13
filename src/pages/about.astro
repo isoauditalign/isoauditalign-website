@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const credentials = [
+  { label: 'ISO 27001 Lead Auditor', hi: true },
+  { label: 'ISO 9001 Lead Auditor', hi: true },
+  { label: 'Certified in Cybersecurity (ISC²)', hi: true },
+  { label: 'COBIT 5', hi: true },
+  { label: 'Internal & External Auditor' },
+  { label: '18+ Years GRC' },
+  { label: 'Former IBM' },
+  { label: 'Cyber Security' },
+  { label: 'Oxford Cyber Security' },
+  { label: 'Data Science' },
+  { label: 'Blockchain' },
+  { label: 'Python' },
+  { label: 'NDIS Auditor' },
+  { label: 'Global Delivery' },
+];
+
+const career = [
+  { co: 'IBM', role: 'Cybersecurity Service Delivery Lead', sub: 'ISMS implementation for Safaricom, Maruti Suzuki & Honda' },
+  { co: 'Consulting', role: 'Lead ISO Consultant — Multi Standard', sub: 'ISO 9001, 14001, 45001 across construction, healthcare, government' },
+  { co: 'GRC', role: 'Governance, Risk & Compliance Specialist', sub: 'NDIS Quality & Safeguarding Framework advisory' },
+  { co: 'Now', role: 'Founder — ISO Audit Align', sub: '150+ certifications · Worldwide delivery' },
+];
+
+---
+<BaseLayout title="About — Built From Real Enterprise Experience" description="ISO Audit Align was founded after 18 years in enterprise technology, cybersecurity, and GRC — including a long tenure at IBM leading ISMS implementations for global clients.">
+  <div class="page-hero">
+    <div class="container">
+      <div class="eyebrow-wrap"><div class="eyebrow-line" style="background:rgba(255,255,255,.5)"></div><span class="eyebrow-text" style="color:rgba(255,255,255,.7)">About</span></div>
+      <h1>Built from real enterprise experience.</h1>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-2" style="align-items:start;gap:56px">
+        <div>
+          <p style="font-size:.98rem;color:var(--muted);line-height:1.8;margin-bottom:20px">I founded ISO Audit Align after 18 years in enterprise technology, cybersecurity, and GRC — including a long tenure at IBM where I led ISMS implementations for major global clients including Safaricom, Maruti Suzuki, and Honda.</p>
+          <p style="font-size:.98rem;color:var(--muted);line-height:1.8;margin-bottom:28px">I'd seen too many organisations handed a folder of generic templates that didn't reflect their business, left behind after certification with no idea how to run what they'd built. ISO Audit Align exists to do it differently — practical systems your team can own long after we've gone.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            {credentials.map((c) => (
+              <span style={`font-size:.76rem;padding:6px 12px;border-radius:999px;border:1.5px solid var(--border);${c.hi ? 'background:var(--red);color:#fff;border-color:var(--red)' : 'color:var(--muted)'}`}>{c.label}</span>
+            ))}
+          </div>
+        </div>
+        <div class="card">
+          <div style="font-family:'Sora',sans-serif;font-weight:800;font-size:1.2rem;margin-bottom:2px">Prashant Sharma</div>
+          <div style="font-size:.82rem;color:var(--muted);margin-bottom:24px">Founder &amp; Principal Consultant — ISO Audit Align</div>
+          <div style="display:flex;flex-direction:column;gap:18px">
+            {career.map((c) => (
+              <div style="display:flex;gap:14px">
+                <span style="font-size:.68rem;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.06em;flex-shrink:0;width:76px">{c.co}</span>
+                <div>
+                  <div style="font-size:.87rem;font-weight:600">{c.role}</div>
+                  <div style="font-size:.78rem;color:var(--muted)">{c.sub}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-tight" style="background:var(--panel)">
+    <div class="container text-center">
+      <div class="eyebrow-wrap reveal" style="justify-content:center"><div class="eyebrow-line"></div><span class="eyebrow-text">The Process</span></div>
+      <h2 class="sec-h reveal">No surprises. Ever.</h2>
+      <p class="sec-intro reveal" style="margin:0 auto 28px">A proven, fixed-price pathway from where you are today to fully certified — every stage mapped to the service behind it.</p>
+      <a class="btn reveal" href="/#roadmap">See the Full Roadmap →</a>
+    </div>
+  </section>
+</BaseLayout>

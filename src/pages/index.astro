@@ -1,0 +1,243 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { STANDARDS } from '../data/standards';
+import { AUDIT_SERVICES } from '../data/auditServices';
+import { ROADMAP } from '../data/roadmap';
+import { TESTIMONIALS } from '../data/testimonials';
+import { CLIENTS } from '../data/clients';
+import { Image } from 'astro:assets';
+
+const featured = TESTIMONIALS.find((t) => t.featured);
+const rest = TESTIMONIALS.filter((t) => !t.featured).slice(0, 4);
+
+const standardIcons: Record<string, string> = {
+  'iso-27001': '🔐', 'iso-9001': '📋', 'iso-14001': '🌱', 'iso-45001': '🦺', 'iso-42001': '🤖', ndis: '🤝',
+};
+// Each standard gets its own accent so the six cards read apart at a glance —
+// a common convention (security=blue, environment=green, safety=orange, AI=purple).
+const standardColors: Record<string, string> = {
+  'iso-27001': '#2C4E82', 'iso-9001': '#2E7DAE', 'iso-14001': '#2F8F5B',
+  'iso-45001': '#C85A08', 'iso-42001': '#7A4FB5', ndis: '#1C8C8C',
+};
+const auditIcons: Record<string, string> = {
+  'gap-analysis': '🔍', 'internal-audits': '📝', 'external-audit-scheduling': '📅',
+  'external-audit-support': '🎯', 'surveillance-audit-support': '🔄',
+};
+
+const whyPoints = [
+  { icon: 'shield', title: '100% First-Audit Pass Rate', desc: 'A full simulated internal audit before your certification body arrives. Every non-conformance closed before it counts.' },
+  { icon: 'gear', title: 'Practical Over Perfect', desc: 'Systems your team actually uses, not documents nobody reads. Built for real-world operation.' },
+  { icon: 'people', title: 'Knowledge Transfer Included', desc: 'We train your team as we build. When we leave, you own the framework — no ongoing dependency.' },
+  { icon: 'tag', title: 'Fixed Price. No Surprises.', desc: "Every engagement quoted fixed-price with clear milestones and deliverables, always." },
+];
+---
+<BaseLayout title="ISO Audit Align — ISO Certification & Training | Melbourne" description="Melbourne-based ISO certification and GRC consultancy. Expert support for ISO 27001, 9001, 14001, 45001, 42001 and NDIS audits across Australia.">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <div class="hero-dot"></div>
+        <span class="mono" style="color:var(--muted)">Australia · UK · US · Canada · UAE · Singapore</span>
+      </div>
+      <h1 class="hero-h1">ISO Certification<br><em>Done Right.</em></h1>
+      <p class="hero-sub">End-to-end ISO consulting across six widely used standards, for organisations worldwide. We design, implement, and get you certified — and we're in the audit room with you on the day that counts.</p>
+      <div class="hero-actions">
+        <a class="btn" href="/contact/">Book Free Consultation</a>
+        <a class="btn-ghost" href="/assessments/">Try a Free Assessment →</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-dial">
+        <svg viewBox="0 0 160 160">
+          <defs>
+            <linearGradient id="dialGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#B81C1C" /><stop offset="100%" stop-color="#C85A08" />
+            </linearGradient>
+          </defs>
+          <circle class="hero-dial-track" cx="80" cy="80" r="70" />
+          <circle class="hero-dial-fill" cx="80" cy="80" r="70" pathLength="502" />
+        </svg>
+        <div class="hero-dial-label">
+          <span class="hero-dial-pct" data-count-to="100" data-suffix="%">0%</span>
+          <span class="hero-dial-txt">First-Audit<br>Pass Rate</span>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hero-stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div><div class="stat-num" data-count-to="18" data-suffix="+">0+</div><div class="stat-label">Years experience</div></div></div>
+        <div class="hero-stat"><div class="hero-stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div><div class="stat-num" data-count-to="150" data-suffix="+">0+</div><div class="stat-label">Orgs certified</div></div></div>
+        <div class="hero-stat"><div class="hero-stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div><div><div class="stat-num" data-count-to="6" data-suffix="">0</div><div class="stat-label">ISO standards</div></div></div>
+        <div class="hero-stat"><div class="hero-stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div><div class="stat-num">Global</div><div class="stat-label">Remote &amp; on-site</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Count-up animation for the hero dial % and stat numbers — runs once on load.
+    const counters = document.querySelectorAll<HTMLElement>('[data-count-to]');
+    const duration = 1500;
+    const start = performance.now();
+    function tick(now: number) {
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      counters.forEach((el) => {
+        const target = Number(el.dataset.countTo);
+        const suffix = el.dataset.suffix ?? '';
+        el.textContent = Math.round(eased * target) + suffix;
+      });
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  </script>
+
+  <!-- STANDARDS OVERVIEW (condensed hub — full detail lives on /services/*) -->
+  <section class="section" id="services">
+    <div class="container">
+      <div class="eyebrow-wrap reveal"><div class="eyebrow-line"></div><span class="eyebrow-text">Services</span></div>
+      <h2 class="sec-h reveal">Six standards. One expert team.</h2>
+      <p class="sec-intro reveal">Whether you need a single certification or an integrated management system, we handle everything from scoping through the certification audit room — anywhere in the world.</p>
+      <div class="grid grid-3 reveal-stagger">
+        {STANDARDS.map((s) => (
+          <a class="card service-card" href={`/services/${s.slug}/`} style={`--accent:${standardColors[s.slug]}`}>
+            <div class="service-card-icon">{standardIcons[s.slug]}</div>
+            <span class="card-tag" style={`background:${standardColors[s.slug]}`}>{s.tag}</span>
+            <h3>{s.name}</h3>
+            <p>{s.shortDesc}</p>
+            <span class="btn-ghost" style={`color:${standardColors[s.slug]}`}>Learn more →</span>
+          </a>
+        ))}
+      </div>
+
+      <div class="stds-partition reveal">
+        <div class="partition-line"></div>
+        <span class="partition-label">Audit, Advisory &amp; Training</span>
+        <div class="partition-line"></div>
+      </div>
+      <div class="grid grid-3 reveal-stagger">
+        {AUDIT_SERVICES.map((s) => (
+          <a class="card service-card" href={`/services/${s.slug}/`}>
+            <div class="service-card-icon">{auditIcons[s.slug]}</div>
+            <span class="card-tag">{s.tag}</span>
+            <h3>{s.name}</h3>
+            <p>{s.shortDesc}</p>
+            <span class="btn-ghost">Learn more →</span>
+          </a>
+        ))}
+        <a class="card service-card" href="/training/">
+          <div class="service-card-icon">🎓</div>
+          <span class="card-tag">Training</span>
+          <h3>Cyber Security &amp; ISO Training</h3>
+          <p>Practical training programmes — from staff awareness through to lead auditor-level certification prep.</p>
+          <span class="btn-ghost">Learn more →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ISO CERTIFICATION ROADMAP + WHY (merged — one story, not two overlapping sections) -->
+  <section class="section roadmap-section" id="roadmap">
+    <div class="container">
+      <div class="eyebrow-wrap reveal"><div class="eyebrow-line"></div><span class="eyebrow-text">How We Work</span></div>
+      <h2 class="sec-h reveal">A proven roadmap. Systems your team can own.</h2>
+      <p class="sec-intro reveal">Every stage mapped to the service behind it — and built so your team can actually run it long after we're gone.</p>
+      <div class="roadmap-layout">
+        <div class="roadmap reveal-stagger">
+          {ROADMAP.map((stage, i) => (
+            <a class="roadmap-stage" href={stage.linkHref}>
+              <div class="roadmap-stage-node">{i + 1}</div>
+              <h3>{stage.title}</h3>
+              <p>{stage.desc}</p>
+              <span class="roadmap-stage-link">{stage.linkLabel} →</span>
+            </a>
+          ))}
+        </div>
+
+        <aside class="roadmap-why">
+          <div class="roadmap-why-label">Why It Works</div>
+          <div class="roadmap-why-vertical reveal-stagger">
+            {whyPoints.map((w) => (
+              <div class="roadmap-why-tile">
+                <div class="roadmap-why-icon">
+                  {w.icon === 'shield' && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>}
+                  {w.icon === 'gear' && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>}
+                  {w.icon === 'people' && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>}
+                  {w.icon === 'tag' && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>}
+                </div>
+                <div>
+                  <h4>{w.title}</h4>
+                  <p>{w.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <a class="btn-ghost mt-32 reveal" href="/about/">More about how we work →</a>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLIENTS -->
+  <section class="section section-tight" style="background:var(--panel)">
+    <div class="container text-center">
+      <div class="eyebrow-wrap reveal" style="justify-content:center"><div class="eyebrow-line"></div><span class="eyebrow-text">Our Clients</span></div>
+      <h2 class="sec-h reveal">Trusted by organisations across Australia and beyond.</h2>
+      <p class="sec-intro reveal" style="margin:0 auto 40px">From healthcare and technology to construction and disability services.</p>
+      <div class="clients-grid reveal-stagger">
+        {CLIENTS.map((c) => (
+          c.logo ? (
+            <a class="client-card" href={c.href} target="_blank" rel="noopener">
+              <div class="client-logo-wrap">
+                <Image src={c.logo} alt={c.alt ?? c.name} width={180} class="client-logo" loading="lazy" />
+              </div>
+              <div class="client-sector">{c.sector}</div>
+            </a>
+          ) : (
+            <div class="client-card"><div class="client-name">{c.name}</div><div class="client-sector">{c.sector}</div></div>
+          )
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section">
+    <div class="container">
+      <div class="eyebrow-wrap reveal" style="justify-content:center"><div class="eyebrow-line"></div><span class="eyebrow-text">Client Testimonials</span></div>
+      <h2 class="sec-h reveal text-center">What clients say.</h2>
+      <p class="sec-intro reveal text-center" style="margin:0 auto 40px">Real feedback from organisations we've guided through ISO certification and training.</p>
+      <div class="testi-grid reveal-stagger">
+        {featured && (
+          <div class="testi-card featured">
+            <div>
+              <div class="testi-stars">★★★★★</div>
+              <p class="testi-text">"{featured.text}"</p>
+              <div class="testi-author">
+                <div class="testi-avatar">{featured.name.split(' ').map((n) => n[0]).join('')}</div>
+                <div>
+                  <div class="testi-name">{featured.name}</div>
+                  <div class="testi-role">{featured.role}</div>
+                  {featured.linkedIn && <a class="testi-li" href={featured.linkedIn} target="_blank" rel="noopener">★ Verified LinkedIn Recommendation</a>}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {rest.map((t) => (
+          <div class="testi-card">
+            <div>
+              <div class="testi-stars">★★★★★</div>
+              <p class="testi-text">"{t.text}"</p>
+            </div>
+            <div class="testi-author">
+              <div class="testi-avatar">{t.name.split(' ').map((n) => n[0]).join('')}</div>
+              <div>
+                <div class="testi-name">{t.name}</div>
+                <div class="testi-role">{t.role}</div>
+                {t.linkedIn ? <a class="testi-li" href={t.linkedIn} target="_blank" rel="noopener">★ Verified LinkedIn Recommendation</a> : <span class="testi-source">{t.source}</span>}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { ASSESSMENTS } from '../../data/assessments';
+
+const meta: Record<string, { emoji: string; blurb: string }> = {
+  'iso-27001-assessment': { emoji: '🔐', blurb: 'Clause-by-clause readiness check across governance, people, physical, technical controls, and resilience.' },
+  'iso-9001-assessment': { emoji: '📋', blurb: 'Readiness check across leadership, planning, support, operations, and performance for your QMS.' },
+  'iso-14001-assessment': { emoji: '🌱', blurb: 'Readiness check across environmental context, planning, support, operational control, and performance.' },
+  'iso-45001-assessment': { emoji: '🦺', blurb: 'Readiness check across leadership, worker participation, planning, operational control, and performance.' },
+  'iso-42001-assessment': { emoji: '🤖', blurb: 'Readiness check across AI governance, risk & impact assessment, support, lifecycle controls, and performance.' },
+  'essential-eight-assessment': { emoji: '🛡️', blurb: 'Maturity Model v4 across all 8 ACSC mitigation strategies — application control, patching, MFA, backups and more.' },
+};
+---
+<BaseLayout title="Free ISO & Cyber Security Assessments" description="Six free interactive self-assessments — ISO 27001, 9001, 14001, 45001, 42001 and the ASD Essential Eight. Instant score, no sign-up required.">
+  <div class="page-hero">
+    <div class="container">
+      <div class="eyebrow-wrap"><div class="eyebrow-line" style="background:rgba(255,255,255,.5)"></div><span class="eyebrow-text" style="color:rgba(255,255,255,.7)">Assessments</span></div>
+      <h1>Know where you stand<br>before your audit does.</h1>
+      <p>Interactive self-assessments to benchmark your compliance posture in minutes — no sign-up required to start.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-3">
+        {ASSESSMENTS.map((a) => {
+          const info = meta[a.slug];
+          const qCount = a.scoringMode === 'percentage'
+            ? a.domains.reduce((s, d) => s + d.questions.length, 0)
+            : a.sections.reduce((s, sec) => s + sec.questions.length, 0);
+          return (
+            <div class="card">
+              <div style="font-size:1.8rem;margin-bottom:12px">{info.emoji}</div>
+              <span class="card-tag">Free · No Sign-Up</span>
+              <h3>{a.title}</h3>
+              <p>{info.blurb}</p>
+              <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:.76rem;color:var(--light);margin-bottom:18px">
+                <span>⏱ {a.timeEstimate}</span>
+                <span>📋 {qCount} questions</span>
+                <span>📄 Printable report</span>
+              </div>
+              <a class="btn" href={`/assessments/${a.slug}/`}>Start Assessment →</a>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

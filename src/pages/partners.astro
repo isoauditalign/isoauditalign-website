@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { PARTNERS, COUNTRIES } from '../data/partners';
+---
+<BaseLayout
+  title="Certification Partners"
+  description="ISO Audit Align works alongside globally accredited certification and inspection bodies including BSI, DNV, SGS, and SAI Global — recommending the right body for your business, not ours."
+  ctaHeading="Not sure which body is right for you?"
+  ctaCopy="We'll recommend the best fit based on your industry, geography, procurement requirements, and budget — with no bias toward any single body."
+>
+  <div class="page-hero">
+    <div class="container">
+      <div class="eyebrow-wrap"><div class="eyebrow-line" style="background:rgba(255,255,255,.5)"></div><span class="eyebrow-text" style="color:rgba(255,255,255,.7)">Certification Partners</span></div>
+      <h1>World-class certification bodies. One consultant.</h1>
+      <p>ISO Audit Align works alongside globally accredited certification and inspection bodies to ensure your certification is recognised wherever you operate. We're neutral — we recommend the right body for your business, not the most convenient one for us.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="eyebrow-wrap"><div class="eyebrow-line"></div><span class="eyebrow-text">Accredited Partners</span></div>
+      <h2 class="sec-h">Our Partner Network</h2>
+      <p class="sec-intro">We work with the following internationally accredited certification bodies. Our independence means we'll recommend whichever body best suits your industry, jurisdiction, and commercial requirements.</p>
+      <div class="grid grid-3">
+        {PARTNERS.map((p) => (
+          <div class="card">
+            <span class="card-tag">{p.type}</span>
+            <h3>{p.name}</h3>
+            <p>{p.desc}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              {p.tags.map((t) => <span style="font-size:.68rem;padding:4px 10px;border-radius:999px;background:var(--panel);color:var(--muted)">{t}</span>)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-tight" style="background:var(--panel)">
+    <div class="container">
+      <div class="grid grid-2" style="gap:56px;align-items:center">
+        <div>
+          <div class="eyebrow-wrap"><div class="eyebrow-line"></div><span class="eyebrow-text">Global Reach</span></div>
+          <h2 class="sec-h">ISO is required in all major markets.</h2>
+          <p style="font-size:.9rem;color:var(--muted);line-height:1.8;margin-bottom:14px">ISO standards are mandated or expected across procurement, government contracts, healthcare, finance, and technology supply chains in virtually every developed economy.</p>
+          <p style="font-size:.9rem;color:var(--muted);line-height:1.8;margin-bottom:24px">Our consultant operates remotely and on-site across all major time zones. Certification bodies we partner with hold accreditation recognised in all listed markets.</p>
+          <a class="btn" href="/contact/">Discuss Your Country →</a>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          {COUNTRIES.map((c) => (
+            <div style="display:flex;align-items:center;gap:10px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:12px 14px">
+              <span style="font-size:1.2rem">{c.flag}</span><span style="font-size:.85rem;font-weight:500">{c.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

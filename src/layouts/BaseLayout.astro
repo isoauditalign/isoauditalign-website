@@ -1,0 +1,109 @@
+---
+import Header from '../components/nav/Header.astro';
+import Footer from '../components/Footer.astro';
+import FloatingWhatsApp from '../components/FloatingWhatsApp.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import AssessmentPromoPopup from '../components/AssessmentPromoPopup.astro';
+import { SITE } from '../config/site';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  ogImage?: string;
+  hideCta?: boolean;
+  ctaHeading?: string;
+  ctaCopy?: string;
+}
+
+const { title, description, jsonLd, ogImage = '/images/og-image.png', hideCta = false, ctaHeading, ctaCopy } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const fullTitle = title.includes('ISO Audit Align') ? title : `${title} | ISO Audit Align`;
+
+const professionalService = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'ISO Audit Align',
+  url: SITE.url,
+  description: 'ISO certification and GRC consultancy offering audit support, gap analysis and compliance monitoring for ISO 27001, 9001, 14001, 45001, 42001 and NDIS standards.',
+  areaServed: { '@type': 'Country', name: 'Australia' },
+  address: { '@type': 'PostalAddress', addressLocality: 'Melbourne', addressRegion: 'VIC', addressCountry: 'AU' },
+  priceRange: '$$',
+  telephone: SITE.phone,
+  email: SITE.email,
+  sameAs: [SITE.linkedin],
+  makesOffer: [
+    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'ISO 27001 Certification Support' } },
+    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'ISO 9001 Certification Support' } },
+    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'ISO 14001 Certification Support' } },
+    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'ISO 45001 Certification Support' } },
+    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'ISO 42001 Certification Support' } },
+    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'NDIS Audit Support' } },
+  ],
+};
+
+const jsonLdBlocks = [professionalService, ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [])];
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalURL} />
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="icon" href="/favicon-16.png" sizes="16x16" type="image/png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#B81C1C" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ISO Audit Align" />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+  <meta property="og:locale" content="en_AU" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={fullTitle} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
+
+  {jsonLdBlocks.map((block) => (
+    <script type="application/ld+json" set:html={JSON.stringify(block)} />
+  ))}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body style="display:flex;flex-direction:column;min-height:100vh">
+  <Header />
+  <main style="flex:1">
+    <slot />
+  </main>
+  {!hideCta && <CtaBanner heading={ctaHeading} copy={ctaCopy} />}
+  <Footer />
+  <FloatingWhatsApp />
+  <AssessmentPromoPopup />
+  <script>
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    );
+    document.querySelectorAll('.reveal, .reveal-stagger').forEach((el) => observer.observe(el));
+  </script>
+</body>
+</html>

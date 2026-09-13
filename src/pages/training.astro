@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const programmes = [
+  {
+    icon: '🔐', title: 'Cyber Security Training',
+    desc: 'Practical cybersecurity awareness and technical training for teams at every level — from end-user awareness through to security practitioner uplift.',
+    items: ['Cyber awareness for all staff', 'Phishing simulation & response', 'Security incident handling', 'ASD Essential Eight in practice', 'ISMS operations training'],
+  },
+  {
+    icon: '📋', title: 'ISO Standards Training',
+    desc: 'Structured training on ISO 27001, 9001, 14001, 45001, and 42001 — from foundation awareness through lead auditor and lead implementer level.',
+    items: ['ISO 27001 Foundation & Implementer', 'ISO 9001 Quality Management', 'ISO 45001 WHS Management', 'ISO 14001 Environmental', 'ISO 42001 AI Governance'],
+  },
+  {
+    icon: '🧑‍💼', title: 'Audit Management & Compliance',
+    desc: 'Build the capability to plan, conduct, manage, and report on internal and external audits — ensuring your organisation meets its compliance obligations confidently and continuously.',
+    items: ['Audit planning & programme management', 'Conducting clause-by-clause audits', 'Writing findings & non-conformances', 'Corrective action management', 'Practical audit simulation exercises'],
+  },
+];
+---
+<BaseLayout title="Training — Cyber Security, ISO Standards & Audit Management" description="Practical training programmes in cyber security awareness, ISO standards, and audit management — from foundation-level staff awareness to lead auditor-level certification prep.">
+  <div class="page-hero">
+    <div class="container">
+      <div class="eyebrow-wrap"><div class="eyebrow-line" style="background:rgba(255,255,255,.5)"></div><span class="eyebrow-text" style="color:rgba(255,255,255,.7)">Training &amp; Education</span></div>
+      <h1>Build the knowledge, not just the paper.</h1>
+      <p>Beyond certification, we run practical training programmes that equip your team to understand, operate, and continuously improve the management systems they work within — so your investment lasts well beyond audit day.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-3">
+        {programmes.map((p) => (
+          <div class="card">
+            <div style="font-size:1.8rem;margin-bottom:12px">{p.icon}</div>
+            <h3>{p.title}</h3>
+            <p>{p.desc}</p>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
+              {p.items.map((item) => (
+                <li style="font-size:.82rem;color:var(--muted);display:flex;gap:8px;align-items:start">
+                  <span style="color:var(--red);flex-shrink:0">—</span>{item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <div class="text-center mt-32">
+        <a class="btn" href="/contact/">Enquire About Training →</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
