@@ -12,7 +12,7 @@ export interface Standard {
   whatIncluded: string[];
   workflow: WorkflowStep[];
   assessmentSlug?: string;
-  relatedGuides?: { title: string; slug: string }[];
+  relatedGuides?: { title: string; slug: string; type?: 'guide' | 'case-study' }[];
   contentNote?: string; // internal flag — not rendered; surfaced in pre-launch checklist
 }
 
@@ -45,6 +45,7 @@ export const STANDARDS: Standard[] = [
       { title: 'How Much Does ISO 27001 Certification Cost in Australia?', slug: 'iso-27001-cost-australia' },
       { title: 'ISO 27001 vs SOC 2: Which Does Your MSP Actually Need?', slug: 'iso-27001-vs-soc-2-msp' },
       { title: 'ISO 27001 Certification Timeline: What to Expect Week by Week', slug: 'iso-27001-timeline' },
+      { title: 'Efex: ISO 27001 Certification for a National Managed Services Provider', slug: 'efex-iso-27001', type: 'case-study' },
     ],
   },
   {

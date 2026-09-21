@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import { STANDARDS } from '../../data/standards';
+import { getClient } from '../../data/clients';
+
+export async function getStaticPaths() {
+  const caseStudies = await getCollection('case-studies');
+  return caseStudies.map((cs) => ({ params: { slug: cs.id }, props: { cs } }));
+}
+
+const { cs } = Astro.props;
+const { Content } = await render(cs);
+
+const client = getClient(cs.data.clientSlug);
+const relatedStandard = cs.data.relatedServiceSlug
+  ? STANDARDS.find((s) => s.slug === cs.data.relatedServiceSlug)
+  : undefined;
+
+const canonicalPath = `https://isoauditalign.com.au/case-studies/${cs.id}/`;
+
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: cs.data.title,
+  description: cs.data.description,
+  datePublished: cs.data.publishDate.toISOString(),
+  author: { '@type': 'Person', name: 'Prashant Sharma', jobTitle: 'Founder, ISO Audit Align' },
+  publisher: {
+    '@type': 'Organization',
+    name: 'ISO Audit Align',
+    logo: { '@type': 'ImageObject', url: 'https://isoauditalign.com.au/images/logo.svg' },
+  },
+  mainEntityOfPage: canonicalPath,
+};
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://isoauditalign.com.au/' },
+    { '@type': 'ListItem', position: 2, name: 'Case Studies', item: 'https://isoauditalign.com.au/case-studies/' },
+    { '@type': 'ListItem', position: 3, name: cs.data.title, item: canonicalPath },
+  ],
+};
+---
+<BaseLayout title={cs.data.title} description={cs.data.description} jsonLd={[articleJsonLd, breadcrumbJsonLd]}>
+  <div class="page-hero">
+    <div class="container">
+      <div class="eyebrow-wrap"><div class="eyebrow-line" style="background:rgba(255,255,255,.5)"></div><span class="eyebrow-text" style="color:rgba(255,255,255,.7)">Case Study · {cs.data.standardTag}</span></div>
+      <h1>{cs.data.title}</h1>
+      <p>{cs.data.description}</p>
+    </div>
+  </div>
+
+  <section class="section-tight">
+    <div class="container">
+      {client && (
+        <div class="cs-client-bar">
+          {client.logo && <Image src={client.logo} alt={client.alt ?? client.name} width={140} class="cs-client-logo" />}
+          <div>
+            <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:1rem">{client.name}</div>
+            <div style="font-size:.82rem;color:var(--light)">{cs.data.sector}</div>
+          </div>
+        </div>
+      )}
+
+      {cs.data.snapshot && cs.data.snapshot.length > 0 && (
+        <div class="cs-snapshot">
+          {cs.data.snapshot.map((s) => (
+            <div class="cs-stat">
+              <div class="cs-stat-value">{s.value}</div>
+              <div class="cs-stat-label">{s.label}</div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div class="guide-layout" style="margin-top:44px">
+        <article class="prose">
+          <Content />
+        </article>
+        <aside class="guide-aside">
+          <div class="card">
+            <h3>Get a fixed-price quote</h3>
+            <p>Book a free 20-minute consultation and we'll scope your certification properly — fixed cost, no hourly billing, no surprises.</p>
+            <a class="btn" href="/contact/" style="width:100%;text-align:center">Book Free Consultation →</a>
+          </div>
+          {relatedStandard && (
+            <div class="card" style="margin-top:20px">
+              <span class="card-tag">{relatedStandard.tag}</span>
+              <h3>{relatedStandard.name}</h3>
+              <p>{relatedStandard.shortDesc}</p>
+              <a class="btn-outline" href={`/services/${relatedStandard.slug}/`} style="width:100%;text-align:center">View service →</a>
+            </div>
+          )}
+        </aside>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -101,10 +101,10 @@ const breadcrumbJsonLd = {
         <h2 class="sec-h">Related guides.</h2>
         <div class="grid grid-3">
           {standard.relatedGuides.map((g) => (
-            <a class="card" href={`/guides/${g.slug}/`}>
-              <span class="card-tag">Guide</span>
+            <a class="card" href={g.type === 'case-study' ? `/case-studies/${g.slug}/` : `/guides/${g.slug}/`}>
+              <span class="card-tag">{g.type === 'case-study' ? 'Case Study' : 'Guide'}</span>
               <h3>{g.title}</h3>
-              <span class="btn-ghost">Read guide →</span>
+              <span class="btn-ghost">{g.type === 'case-study' ? 'Read case study →' : 'Read guide →'}</span>
             </a>
           ))}
         </div>

@@ -517,6 +517,15 @@ footer.site-footer { background: #160C07; border-top: 1.5px solid rgba(255, 255,
   .guide-aside { position: static; }
 }
 
+/* ── CASE STUDY ── */
+.cs-client-bar { display: flex; align-items: center; gap: 16px; margin-bottom: 36px; }
+.cs-client-logo { height: 40px; width: auto; max-width: 140px; object-fit: contain; }
+.cs-snapshot { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.cs-stat { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--r-md); padding: 20px; text-align: center; box-shadow: var(--sh); }
+.cs-stat-value { font-family: 'Sora', sans-serif; font-weight: 800; font-size: 1.5rem; color: var(--red); line-height: 1; margin-bottom: 6px; }
+.cs-stat-label { font-size: .74rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+@media (max-width: 700px) { .cs-snapshot { grid-template-columns: 1fr 1fr; } }
+
 /* ── UTILITY ── */
 .text-center { text-align: center; }
 .text-left { text-align: left; }

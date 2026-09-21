@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import { getClient } from '../../data/clients';
+
+const caseStudies = (await getCollection('case-studies')).sort(
+  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+);
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://isoauditalign.com.au/' },
+    { '@type': 'ListItem', position: 2, name: 'Case Studies', item: 'https://isoauditalign.com.au/case-studies/' },
+  ],
+};
+---
+<BaseLayout
+  title="Case Studies"
+  description="Real ISO certification outcomes for Australian businesses — how clients got certified, what changed, and what they say about the process."
+  jsonLd={breadcrumbJsonLd}
+>
+  <div class="page-hero">
+    <div class="container">
+      <div class="eyebrow-wrap"><div class="eyebrow-line" style="background:rgba(255,255,255,.5)"></div><span class="eyebrow-text" style="color:rgba(255,255,255,.7)">Proof</span></div>
+      <h1>Case Studies</h1>
+      <p>Real clients, real certifications. How the process actually played out, in their own words.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-3">
+        {caseStudies.map((cs) => {
+          const client = getClient(cs.data.clientSlug);
+          return (
+            <a class="card" href={`/case-studies/${cs.id}/`}>
+              <span class="card-tag">{cs.data.standardTag}</span>
+              {client?.logo && <Image src={client.logo} alt={client.alt ?? client.name} width={120} style="margin-bottom:14px" />}
+              <h3>{cs.data.title}</h3>
+              <p>{cs.data.description}</p>
+              <span class="btn-ghost">Read case study →</span>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

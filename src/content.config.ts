@@ -14,4 +14,19 @@ const guides = defineCollection({
   }),
 });
 
-export const collections = { guides };
+const caseStudies = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/case-studies' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    publishDate: z.coerce.date(),
+    clientSlug: z.string(),
+    clientName: z.string(),
+    sector: z.string(),
+    standardTag: z.string(),
+    relatedServiceSlug: z.string().optional(),
+    snapshot: z.array(z.object({ label: z.string(), value: z.string() })).optional(),
+  }),
+});
+
+export const collections = { guides, 'case-studies': caseStudies };
