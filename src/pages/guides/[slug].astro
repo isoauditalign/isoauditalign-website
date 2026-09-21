@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { STANDARDS } from '../../data/standards';
+
+export async function getStaticPaths() {
+  const guides = await getCollection('guides');
+  return guides.map((guide) => ({ params: { slug: guide.id }, props: { guide } }));
+}
+
+const { guide } = Astro.props;
+const { Content } = await render(guide);
+
+const relatedStandard = guide.data.relatedServiceSlug
+  ? STANDARDS.find((s) => s.slug === guide.data.relatedServiceSlug)
+  : undefined;
+
+const canonicalPath = `https://isoauditalign.com.au/guides/${guide.id}/`;
+
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: guide.data.title,
+  description: guide.data.description,
+  datePublished: guide.data.publishDate.toISOString(),
+  dateModified: (guide.data.updatedDate ?? guide.data.publishDate).toISOString(),
+  author: { '@type': 'Person', name: 'Prashant Sharma', jobTitle: 'Founder, ISO Audit Align' },
+  publisher: {
+    '@type': 'Organization',
+    name: 'ISO Audit Align',
+    logo: { '@type': 'ImageObject', url: 'https://isoauditalign.com.au/images/logo.svg' },
+  },
+  mainEntityOfPage: canonicalPath,
+};
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://isoauditalign.com.au/' },
+    { '@type': 'ListItem', position: 2, name: 'Guides', item: 'https://isoauditalign.com.au/guides/' },
+    { '@type': 'ListItem', position: 3, name: guide.data.title, item: canonicalPath },
+  ],
+};
+
+const faqJsonLd = guide.data.faq?.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: guide.data.faq.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    }
+  : undefined;
+
+const jsonLd = [articleJsonLd, breadcrumbJsonLd, ...(faqJsonLd ? [faqJsonLd] : [])];
+
+const dateLabel = guide.data.publishDate.toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<BaseLayout title={guide.data.title} description={guide.data.description} jsonLd={jsonLd}>
+  <div class="page-hero">
+    <div class="container">
+      <div class="eyebrow-wrap"><div class="eyebrow-line" style="background:rgba(255,255,255,.5)"></div><span class="eyebrow-text" style="color:rgba(255,255,255,.7)">{guide.data.category}</span></div>
+      <h1>{guide.data.title}</h1>
+      <p>{guide.data.description}</p>
+    </div>
+  </div>
+
+  <section class="section-tight">
+    <div class="container">
+      <div class="guide-layout">
+        <article class="prose">
+          <p class="guide-meta">Published {dateLabel} · By Prashant Sharma, Founder of ISO Audit Align</p>
+          <Content />
+        </article>
+        <aside class="guide-aside">
+          <div class="card">
+            <h3>Get a fixed-price quote</h3>
+            <p>Book a free 20-minute consultation and we'll scope your ISO 27001 certification properly — fixed cost, no hourly billing, no surprises.</p>
+            <a class="btn" href="/contact/" style="width:100%;text-align:center">Book Free Consultation →</a>
+          </div>
+          {relatedStandard && (
+            <div class="card" style="margin-top:20px">
+              <span class="card-tag">{relatedStandard.tag}</span>
+              <h3>{relatedStandard.name}</h3>
+              <p>{relatedStandard.shortDesc}</p>
+              <a class="btn-outline" href={`/services/${relatedStandard.slug}/`} style="width:100%;text-align:center">View service →</a>
+            </div>
+          )}
+        </aside>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

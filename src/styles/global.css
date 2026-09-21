@@ -493,6 +493,30 @@ footer.site-footer { background: #160C07; border-top: 1.5px solid rgba(255, 255,
 }
 .contact-hero-pill:hover { background: rgba(255, 255, 255, .22); }
 
+/* ── GUIDE / ARTICLE ── */
+.guide-layout { display: grid; grid-template-columns: 1fr 320px; gap: 56px; align-items: start; }
+.guide-meta {
+  font-family: 'JetBrains Mono', monospace; font-size: .76rem; letter-spacing: .02em;
+  color: var(--light); margin-bottom: 28px; text-transform: none;
+}
+.guide-aside { position: sticky; top: 116px; display: flex; flex-direction: column; }
+.prose { font-size: 1rem; line-height: 1.8; color: var(--text); max-width: 720px; }
+.prose h2 { font-family: 'Sora', sans-serif; font-weight: 800; font-size: 1.55rem; letter-spacing: -.01em; margin: 44px 0 16px; color: var(--text); }
+.prose h3 { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1.18rem; margin: 32px 0 12px; color: var(--text); }
+.prose p { margin-bottom: 20px; color: var(--muted); }
+.prose ul, .prose ol { margin: 0 0 20px 22px; color: var(--muted); }
+.prose li { margin-bottom: 8px; line-height: 1.7; }
+.prose strong { color: var(--text); font-weight: 700; }
+.prose a { color: var(--red); text-decoration: underline; text-underline-offset: 2px; }
+.prose table { width: 100%; border-collapse: collapse; margin: 8px 0 28px; font-size: .88rem; }
+.prose th, .prose td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+.prose th { font-family: 'Sora', sans-serif; font-weight: 700; color: var(--text); background: var(--panel); }
+.prose blockquote { border-left: 3px solid var(--red); padding: 4px 0 4px 20px; margin: 0 0 24px; color: var(--muted); font-style: italic; }
+@media (max-width: 900px) {
+  .guide-layout { grid-template-columns: 1fr; }
+  .guide-aside { position: static; }
+}
+
 /* ── UTILITY ── */
 .text-center { text-align: center; }
 .text-left { text-align: left; }

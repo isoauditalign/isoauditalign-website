@@ -12,6 +12,7 @@ export interface Standard {
   whatIncluded: string[];
   workflow: WorkflowStep[];
   assessmentSlug?: string;
+  relatedGuides?: { title: string; slug: string }[];
   contentNote?: string; // internal flag — not rendered; surfaced in pre-launch checklist
 }
 
@@ -40,6 +41,9 @@ export const STANDARDS: Standard[] = [
     ],
     workflow: certificationWorkflow('ISO 27001'),
     assessmentSlug: 'iso-27001-assessment',
+    relatedGuides: [
+      { title: 'How Much Does ISO 27001 Certification Cost in Australia?', slug: 'iso-27001-cost-australia' },
+    ],
   },
   {
     slug: 'iso-9001',

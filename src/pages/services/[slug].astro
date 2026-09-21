@@ -93,4 +93,22 @@ const breadcrumbJsonLd = {
       </div>
     </div>
   </section>
+
+  {standard.relatedGuides && standard.relatedGuides.length > 0 && (
+    <section class="section-tight" style="background:var(--panel)">
+      <div class="container">
+        <div class="eyebrow-wrap"><div class="eyebrow-line"></div><span class="eyebrow-text">Further Reading</span></div>
+        <h2 class="sec-h">Related guides.</h2>
+        <div class="grid grid-3">
+          {standard.relatedGuides.map((g) => (
+            <a class="card" href={`/guides/${g.slug}/`}>
+              <span class="card-tag">Guide</span>
+              <h3>{g.title}</h3>
+              <span class="btn-ghost">Read guide →</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 </BaseLayout>
