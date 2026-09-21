@@ -44,6 +44,7 @@ export const STANDARDS: Standard[] = [
     relatedGuides: [
       { title: 'How Much Does ISO 27001 Certification Cost in Australia?', slug: 'iso-27001-cost-australia' },
       { title: 'ISO 27001 vs SOC 2: Which Does Your MSP Actually Need?', slug: 'iso-27001-vs-soc-2-msp' },
+      { title: 'ISO 27001 Certification Timeline: What to Expect Week by Week', slug: 'iso-27001-timeline' },
     ],
   },
   {
