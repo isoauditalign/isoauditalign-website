@@ -28,16 +28,30 @@ const breadcrumbJsonLd = {
     { '@type': 'ListItem', position: 3, name: standard.name, item: `https://isoauditalign.com.au/services/${standard.slug}/` },
   ],
 };
+
+const faqJsonLd = standard.faq?.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: standard.faq.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    }
+  : undefined;
+
+const jsonLd = [serviceJsonLd, breadcrumbJsonLd, ...(faqJsonLd ? [faqJsonLd] : [])];
 ---
 <BaseLayout
-  title={`${standard.tag} — ${standard.name}`}
+  title={`${standard.h1 ?? standard.name} | ${standard.tag}`}
   description={standard.shortDesc}
-  jsonLd={[serviceJsonLd, breadcrumbJsonLd]}
+  jsonLd={jsonLd}
 >
   <div class="page-hero">
     <div class="container">
       <div class="eyebrow-wrap"><div class="eyebrow-line" style="background:rgba(255,255,255,.5)"></div><span class="eyebrow-text" style="color:rgba(255,255,255,.7)">{standard.tag}</span></div>
-      <h1>{standard.name}</h1>
+      <h1>{standard.h1 ?? standard.name}</h1>
       <p>{standard.heroCopy}</p>
       <div style="display:flex;gap:16px;margin-top:28px;flex-wrap:wrap">
         <a class="btn-white" href="/contact/">Book Free Consultation →</a>
@@ -93,6 +107,23 @@ const breadcrumbJsonLd = {
       </div>
     </div>
   </section>
+
+  {standard.faq && standard.faq.length > 0 && (
+    <section class="section">
+      <div class="container">
+        <div class="eyebrow-wrap"><div class="eyebrow-line"></div><span class="eyebrow-text">FAQ</span></div>
+        <h2 class="sec-h">Common questions.</h2>
+        <div style="display:flex;flex-direction:column;gap:22px;max-width:760px;margin-top:24px">
+          {standard.faq.map((f) => (
+            <div class="card" style="padding:24px 28px">
+              <h3 style="margin-bottom:8px">{f.q}</h3>
+              <p style="color:var(--muted);font-size:.92rem;line-height:1.7;margin:0">{f.a}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   {standard.relatedGuides && standard.relatedGuides.length > 0 && (
     <section class="section-tight" style="background:var(--panel)">

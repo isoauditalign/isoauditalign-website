@@ -30,8 +30,21 @@ const whyPoints = [
   { icon: 'people', title: 'Knowledge Transfer Included', desc: 'We train your team as we build. When we leave, you own the framework — no ongoing dependency.' },
   { icon: 'tag', title: 'Fixed Price. No Surprises.', desc: "Every engagement quoted fixed-price with clear milestones and deliverables, always." },
 ];
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'ISO Audit Align',
+  url: 'https://isoauditalign.com.au',
+  logo: 'https://isoauditalign.com.au/images/logo.svg',
+  founder: { '@type': 'Person', name: 'Prashant Sharma', jobTitle: 'Founder' },
+  sameAs: ['https://linkedin.com/company/iso-audit-align'],
+};
 ---
-<BaseLayout title="ISO Audit Align — ISO Certification & Training | Melbourne" description="Melbourne-based ISO certification and GRC consultancy. Expert support for ISO 27001, 9001, 14001, 45001, 42001 and NDIS audits across Australia.">
+<BaseLayout
+  title="ISO 27001 & ISO Certification Consultants | Australia & UAE"
+  description="Melbourne-based ISO 27001 and ISO certification consultancy serving Australia and the UAE. Expert support for ISO 27001, 9001, 14001, 45001, 42001 and NDIS audits."
+  jsonLd={organizationJsonLd}
+>
   <!-- HERO -->
   <section class="hero">
     <div class="hero-left">
