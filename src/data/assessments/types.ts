@@ -37,7 +37,41 @@ export interface MaturityAssessment {
   sections: MaturitySection[];
 }
 
-export type Assessment = PercentageAssessment | MaturityAssessment;
+export interface RecommendationQuestion {
+  id: string;
+  q: string; // full question text
+  h?: string; // optional help/context text
+  target: 'iso27001' | 'iso42001'; // which standard this question's answer counts toward
+}
+
+export interface RecommendationOutcome {
+  title: string;
+  body: string;
+}
+
+export interface RecommendationAssessment {
+  slug: string;
+  title: string;
+  standardTag: string;
+  timeEstimate: string;
+  scoringMode: 'recommendation';
+  intro: string;
+  questions: RecommendationQuestion[];
+  outcomes: {
+    iso27001: RecommendationOutcome;
+    iso42001: RecommendationOutcome;
+    both: RecommendationOutcome;
+  };
+}
+
+export type Assessment = PercentageAssessment | MaturityAssessment | RecommendationAssessment;
+
+// Shared 3-point scale used by the recommendation-mode assessment.
+export const RECOMMENDATION_SCALE = [
+  { v: 0, l: 'No' },
+  { v: 1, l: 'Somewhat' },
+  { v: 2, l: 'Yes' },
+];
 
 // Shared 4-point answer scale used by every percentage-mode assessment.
 export const CHOICES = [

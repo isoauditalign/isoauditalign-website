@@ -9,7 +9,9 @@ export function getStaticPaths() {
 const { assessment } = Astro.props;
 const questionCount = assessment.scoringMode === 'percentage'
   ? assessment.domains.reduce((s, d) => s + d.questions.length, 0)
-  : assessment.sections.reduce((s, sec) => s + sec.questions.length, 0);
+  : assessment.scoringMode === 'maturity'
+  ? assessment.sections.reduce((s, sec) => s + sec.questions.length, 0)
+  : assessment.questions.length;
 ---
 <AssessmentLayout
   title={assessment.title}

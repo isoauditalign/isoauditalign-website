@@ -1,5 +1,5 @@
-import type { Assessment, PercentageAssessment, MaturityAssessment } from '../data/assessments/types';
-import { CHOICES, MATURITY_SCALE } from '../data/assessments/types';
+import type { Assessment, PercentageAssessment, MaturityAssessment, RecommendationAssessment } from '../data/assessments/types';
+import { CHOICES, MATURITY_SCALE, RECOMMENDATION_SCALE } from '../data/assessments/types';
 import { submitLead } from './leadSubmit';
 
 // Fisher–Yates. Used once at mount to randomise question order per attempt —
@@ -24,12 +24,15 @@ export function mountAssessment(container: HTMLElement, assessment: Assessment) 
       domains: assessment.domains.map((d) => ({ ...d, questions: shuffled(d.questions) })),
     };
     mountPercentageAssessment(container, randomised);
-  } else {
+  } else if (assessment.scoringMode === 'maturity') {
     const randomised: MaturityAssessment = {
       ...assessment,
       sections: assessment.sections.map((s) => ({ ...s, questions: shuffled(s.questions) })),
     };
     mountMaturityAssessment(container, randomised);
+  } else {
+    const randomised: RecommendationAssessment = { ...assessment, questions: shuffled(assessment.questions) };
+    mountRecommendationAssessment(container, randomised);
   }
 }
 
@@ -401,6 +404,122 @@ function mountMaturityAssessment(container: HTMLElement, assessment: MaturityAss
       state.answers = {};
       state.step = 0;
       render();
+    }
+  });
+
+  render();
+}
+
+// ─────────────────────────────────────────────────────────
+// Recommendation-mode engine (ISO 27001 vs ISO 42001) — a short,
+// single-flow quiz that scores toward one of two standards and
+// recommends 27001, 42001, or both, rather than a readiness %.
+// ─────────────────────────────────────────────────────────
+function mountRecommendationAssessment(container: HTMLElement, assessment: RecommendationAssessment) {
+  const state: { answers: Record<string, number>; lead: { name: string; org: string } | null } = {
+    answers: {},
+    lead: null,
+  };
+  const total = assessment.questions.length;
+
+  function render() {
+    const answered = Object.keys(state.answers).length;
+    let html = '<div class="asmnt">';
+    html += `<div class="asmnt-intro"><h2>${assessment.title}</h2><p>${assessment.intro}</p>
+      <div class="asmnt-metrics">
+        <div class="asmnt-metric"><strong>${total}</strong><span>Questions total</span></div>
+        <div class="asmnt-metric"><strong>${answered} / ${total}</strong><span>Answered so far</span></div>
+      </div></div>`;
+
+    html += `<div class="asmnt-progress-wrap"><div class="asmnt-progress-bar"><div class="asmnt-progress-fill" style="width:${Math.round((answered / total) * 100)}%"></div></div>
+      <span class="asmnt-progress-txt">${answered} of ${total} answered</span>`;
+    if (answered === total) html += `<button class="btn" data-action="review" style="font-size:.84rem;padding:10px 18px">View My Recommendation →</button>`;
+    html += '</div>';
+
+    assessment.questions.forEach((q) => {
+      html += `<div class="q-card"><h4>${q.q}</h4>`;
+      if (q.h) html += `<div class="q-hint"><strong>Context:</strong> ${q.h}</div>`;
+      html += '<div class="e8-answers">';
+      RECOMMENDATION_SCALE.forEach((opt) => {
+        const active = state.answers[q.id] === opt.v;
+        html += `<button class="e8-ans${active ? ' active' : ''}" data-action="rec-answer" data-qid="${q.id}" data-value="${opt.v}">${opt.l}</button>`;
+      });
+      html += '</div></div>';
+    });
+
+    if (answered === total) html += `<div class="asmnt-btn-row"><button class="btn" data-action="review">View My Recommendation →</button></div>`;
+    html += '</div>';
+    container.innerHTML = html;
+  }
+
+  function renderResults() {
+    const maxPerStandard = assessment.questions.filter((q) => q.target === 'iso27001').length * 2;
+    let iso27001Score = 0;
+    let iso42001Score = 0;
+    assessment.questions.forEach((q) => {
+      const v = state.answers[q.id] ?? 0;
+      if (q.target === 'iso27001') iso27001Score += v;
+      else iso42001Score += v;
+    });
+    const iso27001Pct = Math.round((iso27001Score / maxPerStandard) * 100);
+    const iso42001Pct = Math.round((iso42001Score / maxPerStandard) * 100);
+
+    const key: 'iso27001' | 'iso42001' | 'both' =
+      iso27001Pct >= 60 && iso42001Pct >= 60 ? 'both' : iso27001Pct >= iso42001Pct ? 'iso27001' : 'iso42001';
+    const outcome = assessment.outcomes[key];
+    const lead = state.lead;
+
+    let html = '<div class="asmnt">';
+    html += `<div class="asmnt-intro"><h2>Your Recommendation</h2>
+      <p>Organisation: <strong id="report-org"></strong> · Assessed by: <span id="report-name"></span></p>
+      <div class="asmnt-metrics">
+        <div class="asmnt-metric"><strong>${iso27001Pct}%</strong><span>ISO 27001 signal</span></div>
+        <div class="asmnt-metric"><strong>${iso42001Pct}%</strong><span>ISO 42001 signal</span></div>
+        <div class="asmnt-metric"><strong>${total}</strong><span>Questions answered</span></div>
+      </div></div>`;
+
+    html += '<div class="result-grid">';
+    html += `<div class="result-card"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px"><h3>ISO 27001:2022</h3><span class="result-band ${iso27001Pct >= 60 ? 'good' : iso27001Pct >= 35 ? 'warn' : 'low'}">${iso27001Pct}%</span></div><div class="result-score">Information Security</div></div>`;
+    html += `<div class="result-card"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px"><h3>ISO 42001:2023</h3><span class="result-band ${iso42001Pct >= 60 ? 'good' : iso42001Pct >= 35 ? 'warn' : 'low'}">${iso42001Pct}%</span></div><div class="result-score">AI Management</div></div>`;
+    html += '</div>';
+
+    html += `<div class="result-panel"><h3>${outcome.title}</h3><p>${outcome.body}</p></div>`;
+
+    html += `<div class="result-cta"><h3>Not sure which is the right fit?</h3>
+      <p>Book a free consultation and we'll talk through your actual scope — no obligation, no generic pitch.</p>
+      <a class="btn-white" href="/contact/">Book a Free Consultation →</a></div>`;
+
+    html += `<div class="asmnt-btn-row"><button class="btn" data-action="print">Print / Save as PDF</button><button class="btn btn-secondary-domain" data-action="retake">Retake Assessment</button></div>`;
+    html += '</div>';
+
+    container.innerHTML = html;
+    if (lead) {
+      const orgEl = document.getElementById('report-org');
+      const nameEl = document.getElementById('report-name');
+      if (orgEl) orgEl.textContent = lead.org;
+      if (nameEl) nameEl.textContent = lead.name;
+    }
+    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  container.addEventListener('click', (e) => {
+    const target = (e.target as HTMLElement).closest('[data-action]') as HTMLElement | null;
+    if (!target || !target.dataset.action) return;
+    const action = target.dataset.action;
+    if (action === 'rec-answer') {
+      state.answers[target.dataset.qid!] = Number(target.dataset.value);
+      render();
+    } else if (action === 'review') {
+      showLeadModal(assessment.standardTag, (lead) => {
+        state.lead = { name: lead.name, org: lead.org };
+        renderResults();
+      });
+    } else if (action === 'print') {
+      window.print();
+    } else if (action === 'retake') {
+      state.answers = {};
+      render();
+      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
 

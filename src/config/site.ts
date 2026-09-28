@@ -8,6 +8,7 @@ export const SITE = {
   whatsapp: 'https://wa.me/61469837609?text=Hi%20ISO%20Audit%20Align%2C%20I%27d%20like%20to%20find%20out%20more%20about%20your%20services.',
   linkedin: 'https://linkedin.com/company/iso-audit-align',
   formspreeAction: 'https://formspree.io/f/xwvgopzd',
+  ga4Id: '',
   hours: 'Mon–Fri: 8:00am – 6:00pm AEST',
   coverage: 'Australia · UK · US · Canada · UAE · Singapore & beyond',
 };
