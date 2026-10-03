@@ -38,6 +38,9 @@ export const AUDIT_SERVICES: Standard[] = [
       { title: 'Findings & Non-Conformance Reports', desc: 'Formal, evidence-backed findings written the way a certification auditor would expect to see them.' },
       { title: 'Corrective Action Tracking', desc: 'We track corrective actions through to genuine close-out, not just a ticked box, ready for your next external audit.' },
     ],
+    relatedGuides: [
+      { title: 'ISO Internal Audits: What They Are, Why You Need Them, and How to Run One', slug: 'iso-internal-audits-explained' },
+    ],
   },
   {
     slug: 'external-audit-scheduling',
@@ -94,6 +97,9 @@ export const AUDIT_SERVICES: Standard[] = [
       { title: 'Readiness Review', desc: 'We confirm records, internal audits, and management reviews are up to date and ready to be evidenced.' },
       { title: 'Audit Day Support', desc: 'On-site or remote support on the day, the same as your original certification audit.' },
       { title: 'Certification Maintained', desc: 'Continuous improvement recommendations so your system stays ahead of drift before the next cycle.' },
+    ],
+    relatedGuides: [
+      { title: 'ISO Surveillance Audits: What Happens in Years 2 and 3', slug: 'iso-surveillance-audits-explained' },
     ],
   },
 ];

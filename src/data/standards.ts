@@ -123,6 +123,9 @@ export const STANDARDS: Standard[] = [
     ],
     workflow: certificationWorkflow('ISO 45001'),
     assessmentSlug: 'iso-45001-assessment',
+    relatedGuides: [
+      { title: "ISO 45001 Certification: What's Involved, What It Costs, and How Long It Takes", slug: 'iso-45001-certification-guide' },
+    ],
   },
   {
     slug: 'iso-42001',

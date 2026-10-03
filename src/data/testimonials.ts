@@ -46,10 +46,10 @@ export const TESTIMONIALS: Testimonial[] = [
     source: 'Client Testimonial',
   },
   {
-    name: 'Charles Mann',
-    role: 'IT Director — Efex',
+    name: 'Andrew',
+    role: 'IT Director — DMS',
     text: 'Prashant ran our internal auditor training programme and it transformed how our team thinks about compliance. Not theoretical — genuinely practical, with real examples from our industry. Our internal audits are now far more rigorous and our last external surveillance audit had zero major non-conformances.',
-    logoSlug: 'efex',
+    logoSlug: 'dms',
     source: 'Client Testimonial',
   },
   {
